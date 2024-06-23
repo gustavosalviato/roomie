@@ -1,3 +1,4 @@
+import { Either, left, right } from '@/core/either'
 import { UserAlreadyExists } from '@/core/errors/errors/user-already-exists'
 import { UsersRepository } from '@/domain/schedule/application/repositories/users-repository'
 import { User } from '@/domain/schedule/enterprise/entities/user'
@@ -9,6 +10,13 @@ interface RegisterUserUseCaseRequest {
   createdAt: Date
 }
 
+type RegisterUserUseCaseResponse = Either<
+  UserAlreadyExists,
+  {
+    user: User
+  }
+>
+
 export class RegisterUserUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
@@ -17,11 +25,11 @@ export class RegisterUserUseCase {
     email,
     password,
     createdAt,
-  }: RegisterUserUseCaseRequest) {
+  }: RegisterUserUseCaseRequest): Promise<RegisterUserUseCaseResponse> {
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
 
     if (userWithSameEmail) {
-      throw new UserAlreadyExists()
+      return left(new UserAlreadyExists())
     }
 
     const user = User.create({
@@ -32,5 +40,9 @@ export class RegisterUserUseCase {
     })
 
     await this.usersRepository.create(user)
+
+    return right({
+      user,
+    })
   }
 }

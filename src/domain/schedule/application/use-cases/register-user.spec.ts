@@ -13,13 +13,14 @@ describe('Register User', () => {
   })
 
   it('should be able to register a user', async () => {
-    await sut.execute({
+    const result = await sut.execute({
       name: 'John Doe',
       email: 'johndoe@gmail.com',
       password: '123456',
       createdAt: new Date(),
     })
 
+    expect(result.isRight()).toBe(true)
     expect(inMemoryUsersRepository.items).toHaveLength(1)
   })
 
@@ -33,13 +34,14 @@ describe('Register User', () => {
       createdAt: new Date(),
     })
 
-    await expect(
-      sut.execute({
-        name: 'John Doe 2',
-        email,
-        password: '123456',
-        createdAt: new Date(),
-      }),
-    ).rejects.toBeInstanceOf(UserAlreadyExists)
+    const result = await sut.execute({
+      name: 'John Doe 2',
+      email,
+      password: '123456',
+      createdAt: new Date(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(UserAlreadyExists)
   })
 })
