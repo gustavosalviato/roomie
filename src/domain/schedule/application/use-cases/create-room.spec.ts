@@ -1,14 +1,14 @@
 import { InMemoryRoomsRepository } from 'test/repositories/in-memory-rooms-repository'
 import { CreateRoomUseCase } from './create-room'
 
-let inMemoryUsersRepository: InMemoryRoomsRepository
+let inMemoryRoomsRepository: InMemoryRoomsRepository
 let sut: CreateRoomUseCase
 
 describe('Create Room', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryRoomsRepository()
+    inMemoryRoomsRepository = new InMemoryRoomsRepository()
 
-    sut = new CreateRoomUseCase(inMemoryUsersRepository)
+    sut = new CreateRoomUseCase(inMemoryRoomsRepository)
   })
 
   it('should be able to register a user', async () => {
@@ -20,6 +20,6 @@ describe('Create Room', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryUsersRepository.items).toHaveLength(1)
+    expect(inMemoryRoomsRepository.items).toHaveLength(1)
   })
 })

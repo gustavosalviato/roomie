@@ -4,14 +4,14 @@ import { EditRoomUseCase } from './edit-room'
 import { Room } from '@/domain/schedule/enterprise/entities/room'
 import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
 
-let inMemoryUsersRepository: InMemoryRoomsRepository
+let inRoomsUsersRepository: InMemoryRoomsRepository
 let sut: EditRoomUseCase
 
 describe('Edit Room', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryRoomsRepository()
+    inRoomsUsersRepository = new InMemoryRoomsRepository()
 
-    sut = new EditRoomUseCase(inMemoryUsersRepository)
+    sut = new EditRoomUseCase(inRoomsUsersRepository)
   })
 
   it('should be able to edit a room', async () => {
@@ -22,7 +22,7 @@ describe('Edit Room', () => {
       resources: ['whiteboard'],
     })
 
-    await inMemoryUsersRepository.create(room)
+    await inRoomsUsersRepository.create(room)
 
     const result = await sut.execute({
       roomId: room.id.toValue(),
@@ -33,7 +33,7 @@ describe('Edit Room', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryUsersRepository.items[0]).toMatchObject({
+    expect(inRoomsUsersRepository.items[0]).toMatchObject({
       name: 'Room 10',
       capacity: 10,
     })

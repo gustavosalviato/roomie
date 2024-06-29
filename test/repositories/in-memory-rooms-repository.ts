@@ -11,9 +11,7 @@ export class InMemoryRoomsRepository implements RoomsRepository {
   async delete(id: string) {
     const roomIndex = this.items.findIndex(room => room.id.toString() === id)
 
-    if (roomIndex > 0) {
-      this.items.splice(roomIndex, 0)
-    }
+    this.items.splice(roomIndex, 1)
   }
 
   async save(room: Room) {
