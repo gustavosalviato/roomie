@@ -1,6 +1,7 @@
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
 import { RegisterUserUseCase } from './register-user'
 import { UserAlreadyExists } from '@/core/errors/errors/user-already-exists'
+import { makeUser } from 'test/factories/make-user'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let sut: RegisterUserUseCase
@@ -13,11 +14,12 @@ describe('Register User', () => {
   })
 
   it('should be able to register a user', async () => {
+    const user = makeUser()
+
     const result = await sut.execute({
-      name: 'John Doe',
-      email: 'johndoe@gmail.com',
-      password: '123456',
-      createdAt: new Date(),
+      name: user.name,
+      email: user.email,
+      password: user.passwordHash,
     })
 
     expect(result.isRight()).toBe(true)
@@ -27,18 +29,24 @@ describe('Register User', () => {
   it('should not be able to register a user with the same email', async () => {
     const email = 'johndoe@email.com'
 
-    await sut.execute({
-      name: 'John Doe 1',
+    const firstUser = makeUser({
       email,
-      password: '123456',
-      createdAt: new Date(),
+    })
+
+    const secondUser = makeUser({
+      email,
+    })
+
+    await sut.execute({
+      name: firstUser.name,
+      email,
+      password: firstUser.passwordHash,
     })
 
     const result = await sut.execute({
-      name: 'John Doe 2',
+      name: secondUser.name,
       email,
-      password: '123456',
-      createdAt: new Date(),
+      password: secondUser.passwordHash,
     })
 
     expect(result.isLeft()).toBe(true)

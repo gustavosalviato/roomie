@@ -7,7 +7,6 @@ interface RegisterUserUseCaseRequest {
   name: string
   email: string
   password: string
-  createdAt: Date
 }
 
 type RegisterUserUseCaseResponse = Either<
@@ -24,7 +23,6 @@ export class RegisterUserUseCase {
     name,
     email,
     password,
-    createdAt,
   }: RegisterUserUseCaseRequest): Promise<RegisterUserUseCaseResponse> {
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
 
@@ -35,7 +33,6 @@ export class RegisterUserUseCase {
     const user = User.create({
       name,
       email,
-      createdAt,
       passwordHash: password,
     })
 
