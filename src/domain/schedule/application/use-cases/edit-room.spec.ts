@@ -3,6 +3,7 @@ import { EditRoomUseCase } from './edit-room'
 
 import { Room } from '@/domain/schedule/enterprise/entities/room'
 import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
+import { makeRoom } from 'test/factories/make-room'
 
 let inRoomsUsersRepository: InMemoryRoomsRepository
 let sut: EditRoomUseCase
@@ -15,12 +16,7 @@ describe('Edit Room', () => {
   })
 
   it('should be able to edit a room', async () => {
-    const room = Room.create({
-      name: 'Room 1',
-      capacity: 10,
-      location: 'Floor 1',
-      resources: ['whiteboard'],
-    })
+    const room = makeRoom()
 
     await inRoomsUsersRepository.create(room)
 

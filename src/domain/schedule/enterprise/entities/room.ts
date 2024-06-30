@@ -2,7 +2,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-interface RoomProps {
+export interface RoomProps {
   name: string
   location: string
   capacity: number
@@ -54,8 +54,8 @@ export class Room extends Entity<RoomProps> {
     this.touch()
   }
 
-  set resources(name: string[]) {
-    this.props.resources = this.resources
+  set resources(resources: string[]) {
+    this.props.resources = resources
 
     this.touch()
   }

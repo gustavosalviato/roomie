@@ -3,6 +3,7 @@ import { DeleteRoomUseCase } from './delete-room'
 
 import { Room } from '@/domain/schedule/enterprise/entities/room'
 import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
+import { makeRoom } from 'test/factories/make-room'
 
 let inMemoryRoomsRepository: InMemoryRoomsRepository
 let sut: DeleteRoomUseCase
@@ -15,12 +16,7 @@ describe('Delete Room', () => {
   })
 
   it('should be able to delete a room', async () => {
-    const room = Room.create({
-      name: 'Room 1',
-      capacity: 10,
-      location: 'Floor 1',
-      resources: ['whiteboard'],
-    })
+    const room = makeRoom()
 
     await inMemoryRoomsRepository.create(room)
 
