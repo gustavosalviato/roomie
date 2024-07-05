@@ -3,8 +3,6 @@ import { InMemoryRoomsRepository } from 'test/repositories/in-memory-rooms-repos
 
 import { CreatePeriodUseCase } from './create-period'
 
-import { Room } from '@/domain/schedule/enterprise/entities/room'
-import { Period } from '@/domain/schedule/enterprise/entities/period'
 import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
 import { makeRoom } from 'test/factories/make-room'
 
