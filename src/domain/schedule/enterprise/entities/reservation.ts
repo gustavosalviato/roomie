@@ -5,7 +5,10 @@ import { Optional } from '@/core/types/optional'
 export interface ReservationProps {
   userId: UniqueEntityID
   roomId: UniqueEntityID
+  periodId: UniqueEntityID
   createdAt: Date
+  startDate: Date
+  endDate: Date
   canceledAt?: Date
 }
 
@@ -18,8 +21,20 @@ export class Reservation extends Entity<ReservationProps> {
     return this.props.roomId
   }
 
+  get periodId() {
+    return this.props.periodId
+  }
+
   get createdAt() {
     return this.props.createdAt
+  }
+
+  get startDate() {
+    return this.props.startDate
+  }
+
+  get endDate() {
+    return this.props.endDate
   }
 
   get canceledAt() {
@@ -27,7 +42,7 @@ export class Reservation extends Entity<ReservationProps> {
   }
 
   static create(
-    props: Optional<Reservation, 'createdAt'>,
+    props: Optional<ReservationProps, 'createdAt'>,
     id?: UniqueEntityID,
   ) {
     const reservation = new Reservation(

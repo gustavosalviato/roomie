@@ -7,4 +7,14 @@ export class InMemoryPeriodsRepository implements PeriodsRepository {
   async create(period: Period) {
     this.items.push(period)
   }
+
+  async findById(id: string) {
+    const period = this.items.find(period => period.id.toString() === id)
+
+    if (!period) {
+      return null
+    }
+
+    return period
+  }
 }
