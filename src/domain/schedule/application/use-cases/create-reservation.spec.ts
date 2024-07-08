@@ -78,8 +78,6 @@ describe('Create Reservation', () => {
       endDate: new Date(2024, 6, 7, 13),
     })
 
-    console.log(inMemoryReservationsRepository.items)
-
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(ReservationAlreadyExits)
   })

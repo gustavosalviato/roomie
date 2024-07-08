@@ -65,8 +65,6 @@ export class CreateReservationUseCase {
         endDate,
       })
 
-    console.log({ reservationAlreadyExists })
-
     if (reservationAlreadyExists) {
       return left(new ReservationAlreadyExits())
     }
