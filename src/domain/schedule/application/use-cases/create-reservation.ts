@@ -6,6 +6,7 @@ import { PeriodsRepository } from '@/domain/schedule/application/repositories/pe
 import { Reservation } from '@/domain/schedule/enterprise/entities/reservation'
 
 import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
+import { ReservationAlreadyExits } from '@/core/errors/errors/reservation-already-exists'
 
 import { Either, left, right } from '@/core/either'
 
@@ -18,7 +19,7 @@ interface CreateReservationUseCaseRequest {
 }
 
 type CreateReservationUseCaseResponse = Either<
-  ResourceNotFound,
+  ResourceNotFound | ReservationAlreadyExits,
   {
     reservation: Reservation
   }
@@ -55,6 +56,19 @@ export class CreateReservationUseCase {
 
     if (!period) {
       return left(new ResourceNotFound())
+    }
+
+    const reservationAlreadyExists =
+      await this.reservationsRepository.findUniqueReservation({
+        roomId: room.id.toString(),
+        startDate,
+        endDate,
+      })
+
+    console.log({ reservationAlreadyExists })
+
+    if (reservationAlreadyExists) {
+      return left(new ReservationAlreadyExits())
     }
 
     const reservation = Reservation.create({

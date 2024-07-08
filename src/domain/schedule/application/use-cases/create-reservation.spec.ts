@@ -8,6 +8,7 @@ import { CreateReservationUseCase } from './create-reservation'
 import { makeRoom } from 'test/factories/make-room'
 import { makeUser } from 'test/factories/make-user'
 import { makePeriod } from 'test/factories/make-period'
+import { ReservationAlreadyExits } from '@/core/errors/errors/reservation-already-exists'
 
 let inMemoryRoomsRepository: InMemoryRoomsRepository
 let inMemoryPeriodsRepository: InMemoryPeriodsRepository
@@ -48,9 +49,38 @@ describe('Create Reservation', () => {
       endDate: period.endDate,
     })
 
-    console.log(result.value)
-
     expect(result.isRight()).toBe(true)
     expect(inMemoryPeriodsRepository.items).toHaveLength(1)
+  })
+
+  it('should not be able to overlap existing reservation', async () => {
+    const user = makeUser()
+    const room = makeRoom()
+    const period = makePeriod()
+
+    inMemoryUsersRepository.create(user)
+    inMemoryRoomsRepository.create(room)
+    inMemoryPeriodsRepository.create(period)
+
+    await sut.execute({
+      userId: user.id.toString(),
+      roomId: room.id.toString(),
+      periodId: period.id.toString(),
+      startDate: new Date(2024, 6, 7, 11),
+      endDate: new Date(2024, 6, 7, 13),
+    })
+
+    const result = await sut.execute({
+      userId: user.id.toString(),
+      roomId: room.id.toString(),
+      periodId: period.id.toString(),
+      startDate: new Date(2024, 6, 7, 11),
+      endDate: new Date(2024, 6, 7, 13),
+    })
+
+    console.log(inMemoryReservationsRepository.items)
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ReservationAlreadyExits)
   })
 })
