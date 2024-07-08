@@ -19,6 +19,14 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
     this.items[reservationIndex] = reservation
   }
 
+  async findManyByUser(userId: string) {
+    const reservations = this.items.filter(
+      reservation => reservation.userId.toString() === userId,
+    )
+
+    return reservations
+  }
+
   async findById(id: string) {
     const reservation = this.items.find(
       reservation => reservation.id.toString() === id,
