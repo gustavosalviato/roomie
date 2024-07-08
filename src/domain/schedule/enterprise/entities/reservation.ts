@@ -37,8 +37,16 @@ export class Reservation extends Entity<ReservationProps> {
     return this.props.endDate
   }
 
-  get canceledAt() {
-    return this.props.canceledAt
+  set startDate(startDate: Date) {
+    this.props.startDate = startDate
+  }
+
+  set endDate(endDate: Date) {
+    this.props.endDate = endDate
+  }
+
+  set canceledAt(canceledAt: Date | undefined) {
+    this.props.canceledAt = canceledAt
   }
 
   static create(

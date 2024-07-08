@@ -11,6 +11,26 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
     this.items.push(reservation)
   }
 
+  async save(reservation: Reservation) {
+    const reservationIndex = this.items.findIndex(
+      room => room.id.toString() === room.id.toString(),
+    )
+
+    this.items[reservationIndex] = reservation
+  }
+
+  async findById(id: string) {
+    const reservation = this.items.find(
+      reservation => reservation.id.toString() === id,
+    )
+
+    if (!reservation) {
+      return null
+    }
+
+    return reservation
+  }
+
   async findUniqueReservation({ startDate, endDate, roomId }: Params) {
     const reservation = this.items.find(reservation => {
       return (
