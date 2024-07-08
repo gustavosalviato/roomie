@@ -21,11 +21,11 @@ export class InMemoryRoomsRepository implements RoomsRepository {
 
     this.items[roomIndex] = room
   }
-  async fetchRooms(): Promise<Room[]> {
+  async fetchRooms() {
     return this.items
   }
 
-  async findById(id: string): Promise<Room | null> {
+  async findById(id: string) {
     const room = this.items.find(room => room.id.toString() === id)
 
     if (!room) {
