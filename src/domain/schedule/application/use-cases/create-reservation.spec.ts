@@ -8,7 +8,8 @@ import { CreateReservationUseCase } from './create-reservation'
 import { makeRoom } from 'test/factories/make-room'
 import { makeUser } from 'test/factories/make-user'
 import { makePeriod } from 'test/factories/make-period'
-import { ReservationAlreadyExits } from '@/core/errors/errors/reservation-already-exists'
+import { ReservationAlreadyExists } from '@/core/errors/errors/reservation-already-exists'
+import { ReservationInvalidDuration } from '@/core/errors/errors/reservation-invalid-duration'
 
 let inMemoryRoomsRepository: InMemoryRoomsRepository
 let inMemoryPeriodsRepository: InMemoryPeriodsRepository
@@ -35,7 +36,10 @@ describe('Create Reservation', () => {
   it('should be able to create a reservation', async () => {
     const user = makeUser()
     const room = makeRoom()
-    const period = makePeriod()
+    const period = makePeriod({
+      startDate: new Date(2024, 6, 20, 12),
+      endDate: new Date(2024, 6, 20, 13),
+    })
 
     inMemoryUsersRepository.create(user)
     inMemoryRoomsRepository.create(room)
@@ -79,6 +83,35 @@ describe('Create Reservation', () => {
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(ReservationAlreadyExits)
+    expect(result.value).toBeInstanceOf(ReservationAlreadyExists)
+  })
+
+  it('should not be able to a reservation with invalid duration', async () => {
+    const user = makeUser()
+    const room = makeRoom()
+    const period = makePeriod()
+
+    inMemoryUsersRepository.create(user)
+    inMemoryRoomsRepository.create(room)
+    inMemoryPeriodsRepository.create(period)
+
+    await sut.execute({
+      userId: user.id.toString(),
+      roomId: room.id.toString(),
+      periodId: period.id.toString(),
+      startDate: new Date(2024, 6, 7, 11),
+      endDate: new Date(2024, 6, 7, 13),
+    })
+
+    const result = await sut.execute({
+      userId: user.id.toString(),
+      roomId: room.id.toString(),
+      periodId: period.id.toString(),
+      startDate: new Date(2024, 6, 7, 11),
+      endDate: new Date(2024, 6, 7, 20),
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ReservationInvalidDuration)
   })
 })

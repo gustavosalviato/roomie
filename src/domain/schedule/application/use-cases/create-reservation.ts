@@ -6,7 +6,9 @@ import { PeriodsRepository } from '@/domain/schedule/application/repositories/pe
 import { Reservation } from '@/domain/schedule/enterprise/entities/reservation'
 
 import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
-import { ReservationAlreadyExits } from '@/core/errors/errors/reservation-already-exists'
+import { ReservationAlreadyExists } from '@/core/errors/errors/reservation-already-exists'
+import { InvalidReservationEndDate } from '@/core/errors/errors/invalid-end-date'
+import { ReservationInvalidDuration } from '@/core/errors/errors/reservation-invalid-duration'
 
 import { Either, left, right } from '@/core/either'
 
@@ -19,7 +21,10 @@ interface CreateReservationUseCaseRequest {
 }
 
 type CreateReservationUseCaseResponse = Either<
-  ResourceNotFound | ReservationAlreadyExits,
+  | ResourceNotFound
+  | ReservationAlreadyExists
+  | InvalidReservationEndDate
+  | ReservationInvalidDuration,
   {
     reservation: Reservation
   }
@@ -66,7 +71,24 @@ export class CreateReservationUseCase {
       })
 
     if (reservationAlreadyExists) {
-      return left(new ReservationAlreadyExits())
+      return left(new ReservationAlreadyExists())
+    }
+
+    if (endDate.getTime() < startDate.getTime()) {
+      throw left(new InvalidReservationEndDate())
+    }
+
+    const differenceInMs = endDate.getTime() - startDate.getTime()
+
+    const differenceInMinutes = differenceInMs / 60000
+
+    if (differenceInMinutes < 30) {
+      return left(new ReservationInvalidDuration())
+    }
+
+    // 4 hours
+    if (differenceInMinutes > 240) {
+      return left(new ReservationInvalidDuration())
     }
 
     const reservation = Reservation.create({
