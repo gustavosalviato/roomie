@@ -2,6 +2,7 @@ import { InMemoryReservationsRepository } from 'test/repositories/in-memory-rese
 import { makeReservation } from 'test/factories/make-reservation'
 
 import { CancelReservation } from './cancel-reservation'
+import { LateCancelReservation } from '@/core/errors/errors/late-cancel-reservation'
 
 describe('Cancel Reservation', () => {
   let inMemoryReservationsRepository: InMemoryReservationsRepository
@@ -10,10 +11,18 @@ describe('Cancel Reservation', () => {
   beforeEach(() => {
     inMemoryReservationsRepository = new InMemoryReservationsRepository()
     sut = new CancelReservation(inMemoryReservationsRepository)
+
+    vi.useFakeTimers()
   })
 
-  it('should be able to cancel a reservation', async () => {
-    const reservation = makeReservation()
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should be able to cancel a reservation up to one hour before the start time', async () => {
+    const reservation = makeReservation({
+      startDate: new Date(),
+    })
 
     await inMemoryReservationsRepository.create(reservation)
 
@@ -22,5 +31,27 @@ describe('Cancel Reservation', () => {
     })
 
     expect(result.isRight()).toBe(true)
+  })
+
+  it('should not be able to cancel a reservation up to one hour after start time', async () => {
+    vi.setSystemTime(new Date(2024, 6, 20, 6))
+
+    const reservation = makeReservation({
+      startDate: new Date(2024, 6, 20, 6),
+      endDate: new Date(2024, 6, 20, 8),
+    })
+
+    await inMemoryReservationsRepository.create(reservation)
+
+    const OneHourAndOneMinuteInMs = 1000 * 60 * 61
+
+    vi.advanceTimersByTime(OneHourAndOneMinuteInMs)
+
+    const result = await sut.execute({
+      reservationId: reservation.id.toString(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(LateCancelReservation)
   })
 })
