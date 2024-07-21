@@ -15,8 +15,6 @@ describe('Create Room', () => {
   it('should be able to register a user', async () => {
     const room = makeRoom()
 
-    console.log(room)
-
     const result = await sut.execute({
       name: room.name,
       capacity: room.capacity,

@@ -1,7 +1,6 @@
 import { InMemoryRoomsRepository } from 'test/repositories/in-memory-rooms-repository'
 import { DeleteRoomUseCase } from './delete-room'
 
-import { Room } from '@/domain/schedule/enterprise/entities/room'
 import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
 import { makeRoom } from 'test/factories/make-room'
 
