@@ -54,4 +54,14 @@ export class InMemoryReservationsRepository implements ReservationsRepository {
 
     return reservation
   }
+
+  async findByRoomAndTime(roomId: string, startDate: Date, endDate: Date) {
+    return this.items.filter(reservation => {
+      return (
+        reservation.roomId.toString() === roomId &&
+        reservation.startDate <= endDate &&
+        reservation.endDate >= startDate
+      )
+    })
+  }
 }

@@ -11,5 +11,9 @@ export interface ReservationsRepository {
   save(reservation: Reservation): Promise<void>
   findManyByUser(userId: string): Promise<Reservation[]>
   findById(id: string): Promise<Reservation | null>
-  findUniqueReservation(params: Params): Promise<Reservation | null>
+  findByRoomAndTime(
+    roomId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Reservation[]>
 }

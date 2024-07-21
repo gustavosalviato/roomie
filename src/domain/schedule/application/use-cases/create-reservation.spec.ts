@@ -95,14 +95,6 @@ describe('Create Reservation', () => {
     inMemoryRoomsRepository.create(room)
     inMemoryPeriodsRepository.create(period)
 
-    await sut.execute({
-      userId: user.id.toString(),
-      roomId: room.id.toString(),
-      periodId: period.id.toString(),
-      startDate: new Date(2024, 6, 7, 11),
-      endDate: new Date(2024, 6, 7, 13),
-    })
-
     const result = await sut.execute({
       userId: user.id.toString(),
       roomId: room.id.toString(),

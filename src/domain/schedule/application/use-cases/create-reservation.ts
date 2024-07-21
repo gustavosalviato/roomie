@@ -63,14 +63,15 @@ export class CreateReservationUseCase {
       return left(new ResourceNotFound())
     }
 
-    const reservationAlreadyExists =
-      await this.reservationsRepository.findUniqueReservation({
-        roomId: room.id.toString(),
-        startDate,
-        endDate,
-      })
+    const reservations = await this.reservationsRepository.findByRoomAndTime(
+      room.id.toString(),
+      startDate,
+      endDate,
+    )
 
-    if (reservationAlreadyExists) {
+    console.log({ reservations })
+
+    if (reservations.length > 0) {
       return left(new ReservationAlreadyExists())
     }
 
