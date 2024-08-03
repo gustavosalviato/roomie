@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "test:watch": "vitest",
-    "dev": "tsx watch src/infra/server.ts"
+    "dev": "tsx watch src/infra/server.ts",
+    "build": "tsup src --out-dir build",
+    "start": "node build/infra/server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
     "@faker-js/faker": "^8.4.1",
     "@types/node": "^20.14.8",
     "prettier": "^3.3.2",
+    "tsup": "^8.2.4",
     "tsx": "^4.16.5",
     "typescript": "^5.5.2",
     "vite-tsconfig-paths": "^4.3.2",
