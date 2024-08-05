@@ -10,7 +10,7 @@ export function makeUser(
     {
       name: faker.internet.userName(),
       email: faker.internet.email(),
-      passwordHash: faker.internet.password(),
+      password: faker.internet.password(),
       ...override,
     },
     id,
