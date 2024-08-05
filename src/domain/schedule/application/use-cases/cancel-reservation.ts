@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either'
-import { LateCancelReservation } from '@/core/errors/errors/late-cancel-reservation'
-import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
-import { ReservationsRepository } from '@/domain/schedule/application/repositories/reservations-repository'
+import { LateCancelReservationError } from './errors/late-cancel-reservation-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
+import { ReservationsRepository } from '@/domain/schedule/application/repositories/reservations-repository'
 import { Reservation } from '@/domain/schedule/enterprise/entities/reservation'
 
 interface CancelReservationRequest {
@@ -10,7 +10,7 @@ interface CancelReservationRequest {
 }
 
 type CancelReservationResponse = Either<
-  ResourceNotFound | LateCancelReservation,
+  ResourceNotFoundError | LateCancelReservationError,
   {
     reservation: Reservation
   }
@@ -26,7 +26,7 @@ export class CancelReservation {
       await this.reservationsRepository.findById(reservationId)
 
     if (!reservation) {
-      return left(new ResourceNotFound())
+      return left(new ResourceNotFoundError())
     }
 
     const differenceInMs =
@@ -35,7 +35,7 @@ export class CancelReservation {
     const differenceInMinutes = differenceInMs / 60000
 
     if (differenceInMinutes > 60) {
-      return left(new LateCancelReservation())
+      return left(new LateCancelReservationError())
     }
 
     reservation.canceledAt = new Date()

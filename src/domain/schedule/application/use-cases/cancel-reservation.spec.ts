@@ -1,8 +1,8 @@
 import { InMemoryReservationsRepository } from 'test/repositories/in-memory-reservations-repository'
 import { makeReservation } from 'test/factories/make-reservation'
+import { LateCancelReservationError } from './errors/late-cancel-reservation-error'
 
 import { CancelReservation } from './cancel-reservation'
-import { LateCancelReservation } from '@/core/errors/errors/late-cancel-reservation'
 
 describe('Cancel Reservation', () => {
   let inMemoryReservationsRepository: InMemoryReservationsRepository
@@ -52,6 +52,6 @@ describe('Cancel Reservation', () => {
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(LateCancelReservation)
+    expect(result.value).toBeInstanceOf(LateCancelReservationError)
   })
 })

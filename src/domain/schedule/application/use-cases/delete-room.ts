@@ -1,12 +1,12 @@
 import { RoomsRepository } from '@/domain/schedule/application/repositories/rooms-repository'
 import { Either, left, right } from '@/core/either'
-import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface DeleteRoomUseCaseRequest {
   roomId: string
 }
 
-type DeleteRoomUseCaseResponse = Either<ResourceNotFound, {}>
+type DeleteRoomUseCaseResponse = Either<ResourceNotFoundError, {}>
 
 export class DeleteRoomUseCase {
   constructor(private roomsRepository: RoomsRepository) {}
@@ -17,7 +17,7 @@ export class DeleteRoomUseCase {
     const room = await this.roomsRepository.findById(roomId)
 
     if (!room) {
-      return left(new ResourceNotFound())
+      return left(new ResourceNotFoundError())
     }
 
     await this.roomsRepository.delete(roomId)

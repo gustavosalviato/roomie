@@ -2,7 +2,7 @@ import { PeriodsRepository } from '@/domain/schedule/application/repositories/pe
 import { Period } from '@/domain/schedule/enterprise/entities/period'
 import { RoomsRepository } from '@/domain/schedule/application/repositories/rooms-repository'
 
-import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 import { Either, left, right } from '@/core/either'
 
@@ -13,7 +13,7 @@ interface CreatePeriodUseCaseRequest {
 }
 
 type CreatePeriodUseCaseResponse = Either<
-  ResourceNotFound,
+  ResourceNotFoundError,
   {
     period: Period
   }
@@ -33,7 +33,7 @@ export class CreatePeriodUseCase {
     const room = await this.roomsRepository.findById(roomId)
 
     if (!room) {
-      return left(new ResourceNotFound())
+      return left(new ResourceNotFoundError())
     }
 
     const period = Period.create({

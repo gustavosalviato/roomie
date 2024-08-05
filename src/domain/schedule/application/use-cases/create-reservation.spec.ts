@@ -8,8 +8,9 @@ import { CreateReservationUseCase } from './create-reservation'
 import { makeRoom } from 'test/factories/make-room'
 import { makeUser } from 'test/factories/make-user'
 import { makePeriod } from 'test/factories/make-period'
-import { ReservationAlreadyExists } from '@/core/errors/errors/reservation-already-exists'
-import { ReservationInvalidDuration } from '@/core/errors/errors/reservation-invalid-duration'
+
+import { ReservationAlreadyExistsError } from './errors/reservation-already-exists-error'
+import { ReservationInvalidDurationError } from './errors/reservation-invalid-duration-error'
 
 let inMemoryRoomsRepository: InMemoryRoomsRepository
 let inMemoryPeriodsRepository: InMemoryPeriodsRepository
@@ -83,7 +84,7 @@ describe('Create Reservation', () => {
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(ReservationAlreadyExists)
+    expect(result.value).toBeInstanceOf(ReservationAlreadyExistsError)
   })
 
   it('should not be able to a reservation with invalid duration', async () => {
@@ -104,6 +105,6 @@ describe('Create Reservation', () => {
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(ReservationInvalidDuration)
+    expect(result.value).toBeInstanceOf(ReservationInvalidDurationError)
   })
 })

@@ -1,7 +1,7 @@
 import { InMemoryRoomsRepository } from 'test/repositories/in-memory-rooms-repository'
 import { EditRoomUseCase } from './edit-room'
 
-import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { makeRoom } from 'test/factories/make-room'
 
 let inRoomsUsersRepository: InMemoryRoomsRepository
@@ -46,6 +46,6 @@ describe('Edit Room', () => {
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(ResourceNotFound)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })
