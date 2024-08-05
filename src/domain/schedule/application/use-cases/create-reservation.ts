@@ -5,10 +5,11 @@ import { PeriodsRepository } from '@/domain/schedule/application/repositories/pe
 
 import { Reservation } from '@/domain/schedule/enterprise/entities/reservation'
 
-import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
-import { ReservationAlreadyExists } from '@/core/errors/errors/reservation-already-exists'
-import { InvalidReservationEndDate } from '@/core/errors/errors/invalid-end-date'
-import { ReservationInvalidDuration } from '@/core/errors/errors/reservation-invalid-duration'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+
+import { ReservationAlreadyExistsError } from './errors/reservation-already-exists-error'
+import { InvalidReservationEndDateError } from './errors/invalid-reservation-end-date-error'
+import { ReservationInvalidDurationError } from './errors/reservation-invalid-duration-error'
 
 import { Either, left, right } from '@/core/either'
 
@@ -21,10 +22,10 @@ interface CreateReservationUseCaseRequest {
 }
 
 type CreateReservationUseCaseResponse = Either<
-  | ResourceNotFound
-  | ReservationAlreadyExists
-  | InvalidReservationEndDate
-  | ReservationInvalidDuration,
+  | ResourceNotFoundError
+  | ReservationAlreadyExistsError
+  | InvalidReservationEndDateError
+  | ReservationInvalidDurationError,
   {
     reservation: Reservation
   }
@@ -48,19 +49,19 @@ export class CreateReservationUseCase {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
-      return left(new ResourceNotFound())
+      return left(new ResourceNotFoundError())
     }
 
     const room = await this.roomsRespository.findById(roomId)
 
     if (!room) {
-      return left(new ResourceNotFound())
+      return left(new ResourceNotFoundError())
     }
 
     const period = await this.periodsRepository.findById(periodId)
 
     if (!period) {
-      return left(new ResourceNotFound())
+      return left(new ResourceNotFoundError())
     }
 
     const reservations = await this.reservationsRepository.findByRoomAndTime(
@@ -69,14 +70,12 @@ export class CreateReservationUseCase {
       endDate,
     )
 
-    console.log({ reservations })
-
     if (reservations.length > 0) {
-      return left(new ReservationAlreadyExists())
+      return left(new ReservationAlreadyExistsError())
     }
 
     if (endDate.getTime() < startDate.getTime()) {
-      throw left(new InvalidReservationEndDate())
+      throw left(new InvalidReservationEndDateError())
     }
 
     const differenceInMs = endDate.getTime() - startDate.getTime()
@@ -84,12 +83,12 @@ export class CreateReservationUseCase {
     const differenceInMinutes = differenceInMs / 60000
 
     if (differenceInMinutes < 30) {
-      return left(new ReservationInvalidDuration())
+      return left(new ReservationInvalidDurationError())
     }
 
     // 4 hours
     if (differenceInMinutes > 240) {
-      return left(new ReservationInvalidDuration())
+      return left(new ReservationInvalidDurationError())
     }
 
     const reservation = Reservation.create({

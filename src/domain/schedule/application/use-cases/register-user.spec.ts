@@ -1,8 +1,9 @@
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
 import { RegisterUserUseCase } from './register-user'
-import { UserAlreadyExists } from '@/core/errors/errors/user-already-exists'
 import { makeUser } from 'test/factories/make-user'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
+
+import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let fakeHasher: FakeHasher
@@ -56,6 +57,6 @@ describe('Register User', () => {
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(UserAlreadyExists)
+    expect(result.value).toBeInstanceOf(UserAlreadyExistsError)
   })
 })

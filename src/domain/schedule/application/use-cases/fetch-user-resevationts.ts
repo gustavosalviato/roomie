@@ -1,5 +1,5 @@
 import { Either, left, right } from '@/core/either'
-import { ResourceNotFound } from '@/core/errors/errors/resource-not-found'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { ReservationsRepository } from '@/domain/schedule/application/repositories/reservations-repository'
 import { UsersRepository } from '@/domain/schedule/application/repositories/users-repository'
 
@@ -10,7 +10,7 @@ interface FetchUserReservationsRequest {
 }
 
 type FetchUserReservationsResponse = Either<
-  ResourceNotFound,
+  ResourceNotFoundError,
   {
     reservations: Reservation[]
   }
@@ -28,7 +28,7 @@ export class FetchUserReservations {
     const user = this.usersRepository.findById(userId)
 
     if (!user) {
-      return left(new ResourceNotFound())
+      return left(new ResourceNotFoundError())
     }
 
     const reservations =
