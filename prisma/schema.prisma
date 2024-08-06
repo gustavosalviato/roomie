@@ -8,12 +8,12 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(uuid())
-  name          String
-  email         String        @unique
-  password_hash String
-  created_at    DateTime      @default(now())
-  reservations  Reservation[]
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  password     String
+  created_at   DateTime      @default(now())
+  reservations Reservation[]
 
   @@map("users")
 }
@@ -39,20 +39,23 @@ model Period {
   start_date DateTime
   end_date   DateTime
 
-  room Room @relation(fields: [room_id], references: [id])
+  room         Room          @relation(fields: [room_id], references: [id])
+  reservations Reservation[]
 }
 
 model Reservation {
   id String @id @default(uuid())
 
-  user_id String
-  room_id String
+  user_id   String
+  room_id   String
+  period_id String
 
   start_date  DateTime
   end_date    DateTime
   created_at  DateTime  @default(now())
   canceled_at DateTime?
 
-  user User @relation(fields: [user_id], references: [id])
-  room Room @relation(fields: [room_id], references: [id])
+  user   User   @relation(fields: [user_id], references: [id])
+  room   Room   @relation(fields: [room_id], references: [id])
+  period Period @relation(fields: [period_id], references: [id])
 }

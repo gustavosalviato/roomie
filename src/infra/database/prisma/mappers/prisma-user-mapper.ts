@@ -5,7 +5,7 @@ export class PrismaUserMapper {
     return User.create({
       name: raw.name,
       email: raw.email,
-      passwordHash: raw.password_hash,
+      password: raw.password,
       createdAt: raw.created_at,
     })
   }
@@ -15,7 +15,7 @@ export class PrismaUserMapper {
       id: user.id.toString(),
       name: user.name,
       email: user.email,
-      password_hash: user.passwordHash,
+      password: user.password,
       created_at: user.createdAt,
     }
   }
