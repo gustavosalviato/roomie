@@ -36,7 +36,7 @@ export class AuthenticateUser {
       return left(new ResourceNotFoundError())
     }
 
-    const doesPasswordMatches = this.hashCompare.compare(
+    const doesPasswordMatches = await this.hashCompare.compare(
       password,
       user.password,
     )

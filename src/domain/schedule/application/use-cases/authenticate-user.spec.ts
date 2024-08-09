@@ -3,8 +3,8 @@ import { AuthenticateUser } from './authenticate-user'
 import { makeUser } from 'test/factories/make-user'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 
-import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let fakeHasher: FakeHasher
@@ -19,13 +19,15 @@ describe('Authenticate User', () => {
   })
 
   it('should be able to authenticate user', async () => {
-    const user = makeUser()
+    const user = makeUser({
+      password: '123456-hashed',
+    })
 
     inMemoryUsersRepository.create(user)
 
     const result = await sut.execute({
       email: user.email,
-      password: user.password,
+      password: '123456',
     })
 
     expect(result.isRight()).toBe(true)
@@ -47,6 +49,18 @@ describe('Authenticate User', () => {
   })
 
   it('should not be able to autheticate user with wrong password', async () => {
-    // Todo
+    const user = makeUser({
+      password: '123456',
+    })
+
+    inMemoryUsersRepository.create(user)
+
+    const result = await sut.execute({
+      email: user.email,
+      password: 'user-wrong-password',
+    })
+
+    expect(result.isLeft()).toBeTruthy()
+    expect(result.value).toBeInstanceOf(InvalidCredentialsError)
   })
 })
