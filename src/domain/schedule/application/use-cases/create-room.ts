@@ -1,6 +1,7 @@
 import { Room } from '@/domain/schedule/enterprise/entities/room'
 import { RoomsRepository } from '@/domain/schedule/application/repositories/rooms-repository'
-import { Either, right } from '@/core/either'
+import { Either, left, right } from '@/core/either'
+import { RecordAlreadyExistsError } from './errors/room-already-exists'
 
 interface CreateRoomUseCaseRequest {
   name: string
@@ -10,7 +11,7 @@ interface CreateRoomUseCaseRequest {
 }
 
 type CreateRoomUseCaseResponse = Either<
-  null,
+  RecordAlreadyExistsError,
   {
     room: Room
   }
@@ -25,6 +26,12 @@ export class CreateRoomUseCase {
     location,
     resources,
   }: CreateRoomUseCaseRequest): Promise<CreateRoomUseCaseResponse> {
+    const roomAlreadyExists = await this.roomsRepository.findByName(name)
+
+    if (roomAlreadyExists) {
+      return left(new RecordAlreadyExistsError('room'))
+    }
+
     const room = Room.create({
       name,
       location,
