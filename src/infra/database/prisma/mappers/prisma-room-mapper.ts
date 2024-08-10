@@ -7,7 +7,7 @@ export class PrismaRoomMapper {
       name: raw.name,
       capacity: raw.capacity,
       location: raw.location,
-      resources: [raw.resources],
+      resources: raw.resources,
     })
   }
 
@@ -17,7 +17,7 @@ export class PrismaRoomMapper {
       name: room.name,
       capacity: room.capacity,
       location: room.location,
-      resources: room.resources[0],
+      resources: room.resources,
     }
   }
 }
