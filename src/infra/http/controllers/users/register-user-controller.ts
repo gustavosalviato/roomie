@@ -1,8 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 
 import { UserAlreadyExistsError } from '@/domain/schedule/application/use-cases/errors/user-already-exists-error'
-
-import { makeRegisterUserUseCase } from '@/infra/http/factories/make-register-user-use-case'
+import { RegisterUserUseCase } from '@/domain/schedule/application/use-cases/register-user'
 import { Controller } from '@/infra/http/protocols/controller'
 
 import z from 'zod'
@@ -14,21 +13,31 @@ const bodySchema = z.object({
 })
 
 export class RegisterUserController implements Controller {
+  constructor(private registerUserUseCase: RegisterUserUseCase) {}
+
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const { name, email, password } = bodySchema.parse(request.body)
+    try {
+      const { name, email, password } = bodySchema.parse(request.body)
 
-    const registerUser = makeRegisterUserUseCase()
+      const result = await this.registerUserUseCase.execute({
+        name,
+        email,
+        password,
+      })
 
-    const result = await registerUser.execute({
-      name,
-      email,
-      password,
-    })
+      if (result.isLeft()) {
+        throw new UserAlreadyExistsError()
+      }
 
-    if (result.isLeft()) {
-      throw new UserAlreadyExistsError()
+      return reply.status(201).send()
+    } catch (error) {
+      if (error instanceof UserAlreadyExistsError) {
+        return reply.status(400).send({
+          message: error.message,
+        })
+      }
+
+      console.log(error)
     }
-
-    return reply.status(201).send()
   }
 }
