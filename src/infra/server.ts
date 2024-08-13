@@ -1,8 +1,5 @@
 import { env } from './env'
 import { app } from './app'
-import { userRoutes } from './http/controllers/users'
-
-app.register(userRoutes)
 
 app
   .listen({
