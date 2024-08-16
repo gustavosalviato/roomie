@@ -1,5 +1,5 @@
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
-import { AuthenticateUser } from './authenticate-user'
+import { AuthenticateUserUseCase } from './authenticate-user'
 import { makeUser } from 'test/factories/make-user'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 
@@ -8,14 +8,14 @@ import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let fakeHasher: FakeHasher
-let sut: AuthenticateUser
+let sut: AuthenticateUserUseCase
 
 describe('Authenticate User', () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
     fakeHasher = new FakeHasher()
 
-    sut = new AuthenticateUser(inMemoryUsersRepository, fakeHasher)
+    sut = new AuthenticateUserUseCase(inMemoryUsersRepository, fakeHasher)
   })
 
   it('should be able to authenticate user', async () => {

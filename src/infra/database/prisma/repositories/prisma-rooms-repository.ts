@@ -30,7 +30,7 @@ export class PrismaRoomsRespository implements RoomsRepository {
         name: room.name,
         capacity: room.capacity,
         location: room.location,
-        resources: room.resources[0],
+        resources: room.resources,
       },
     })
   }
@@ -45,6 +45,20 @@ export class PrismaRoomsRespository implements RoomsRepository {
     const room = await this.prisma.room.findUnique({
       where: {
         id,
+      },
+    })
+
+    if (!room) {
+      return null
+    }
+
+    return PrismaRoomMapper.toDomain(room)
+  }
+
+  async findByName(name: string): Promise<null | Room> {
+    const room = await this.prisma.room.findUnique({
+      where: {
+        name,
       },
     })
 

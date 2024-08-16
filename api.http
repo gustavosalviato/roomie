@@ -9,11 +9,21 @@ Content-Type: application/json
 
 ###
 
-
 POST http://localhost:3333/sessions
 Content-Type: application/json
 
 {
-  "email": "john@smith.com",
+  "email": "gustavosalviato8@gmail.com",
   "password": "123456"
+}
+
+###
+POST http://localhost:3333/rooms
+Content-Type: application/json
+
+{
+  "name": "Room adkjaskdjd",
+  "capacity": 10,
+  "location": "floor 2",
+  "resources": ["whiteboard", "table", "projetor"]
 }
