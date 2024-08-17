@@ -39,3 +39,8 @@ Content-Type: application/json
   "location": "floor 1",
   "resources": ["whiteboard", "table", "projetor"]
 }
+
+###
+
+DELETE http://localhost:3333/rooms/fa7b15a3-f2b4-4c1f-a7ec-eb42b23d949c
+Content-Type: application/json

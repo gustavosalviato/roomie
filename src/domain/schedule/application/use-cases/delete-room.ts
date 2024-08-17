@@ -19,7 +19,6 @@ export class DeleteRoomUseCase {
     if (!room) {
       return left(new ResourceNotFoundError())
     }
-
     await this.roomsRepository.delete(roomId)
 
     return right({})
