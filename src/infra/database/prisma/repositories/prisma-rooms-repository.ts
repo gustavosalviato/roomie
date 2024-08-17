@@ -22,16 +22,15 @@ export class PrismaRoomsRespository implements RoomsRepository {
     })
   }
   async save(room: Room): Promise<void> {
+    const raw = PrismaRoomMapper.toPrisma(room)
+
+    console.log({ raw })
+
     await this.prisma.room.update({
       where: {
-        id: room.id.toString(),
+        id: raw.id,
       },
-      data: {
-        name: room.name,
-        capacity: room.capacity,
-        location: room.location,
-        resources: room.resources,
-      },
+      data: raw,
     })
   }
   async fetchRooms(): Promise<Room[]> {
@@ -45,20 +44,6 @@ export class PrismaRoomsRespository implements RoomsRepository {
     const room = await this.prisma.room.findUnique({
       where: {
         id,
-      },
-    })
-
-    if (!room) {
-      return null
-    }
-
-    return PrismaRoomMapper.toDomain(room)
-  }
-
-  async findByName(name: string): Promise<null | Room> {
-    const room = await this.prisma.room.findUnique({
-      where: {
-        name,
       },
     })
 

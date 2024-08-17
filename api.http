@@ -27,3 +27,15 @@ Content-Type: application/json
   "location": "floor 2",
   "resources": ["whiteboard", "table", "projetor"]
 }
+
+###
+
+PUT http://localhost:3333/rooms/84b3f2da-f846-4b3c-8f22-43a614173146
+Content-Type: application/json
+
+{
+  "name": "Room modified 1",
+  "capacity": 1,
+  "location": "floor 1",
+  "resources": ["whiteboard", "table", "projetor"]
+}
