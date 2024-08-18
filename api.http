@@ -9,8 +9,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3333/sessions
-Content-Type: application/json
+POST http://localhost:3333/sessions Content-Type: application/json
 
 {
   "email": "gustavosalviato8@gmail.com",
@@ -44,3 +43,13 @@ Content-Type: application/json
 
 DELETE http://localhost:3333/rooms/fa7b15a3-f2b4-4c1f-a7ec-eb42b23d949c
 Content-Type: application/json
+
+###
+
+POST http://localhost:3333/rooms/f572bd3c-9698-4f89-84f5-5fd5245ba118/periods
+Content-Type: application/json
+
+{
+  "startDate": "2024-08-18T13:00:00.870Z",
+  "endDate": "2024-08-18T14:00:00.870Z"
+}
