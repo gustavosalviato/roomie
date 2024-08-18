@@ -17,8 +17,6 @@ interface CreateReservationUseCaseRequest {
   userId: string
   roomId: string
   periodId: string
-  startDate: Date
-  endDate: Date
 }
 
 type CreateReservationUseCaseResponse = Either<
@@ -43,8 +41,6 @@ export class CreateReservationUseCase {
     userId,
     roomId,
     periodId,
-    startDate,
-    endDate,
   }: CreateReservationUseCaseRequest): Promise<CreateReservationUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
@@ -66,19 +62,19 @@ export class CreateReservationUseCase {
 
     const reservations = await this.reservationsRepository.findByRoomAndTime(
       room.id.toString(),
-      startDate,
-      endDate,
+      period.startDate,
+      period.endDate,
     )
 
     if (reservations.length > 0) {
       return left(new ReservationAlreadyExistsError())
     }
 
-    if (endDate.getTime() < startDate.getTime()) {
+    if (period.endDate.getTime() < period.startDate.getTime()) {
       throw left(new InvalidReservationEndDateError())
     }
 
-    const differenceInMs = endDate.getTime() - startDate.getTime()
+    const differenceInMs = period.endDate.getTime() - period.startDate.getTime()
 
     const differenceInMinutes = differenceInMs / 60000
 
@@ -95,8 +91,8 @@ export class CreateReservationUseCase {
       roomId: room.id,
       userId: user.id,
       periodId: period.id,
-      startDate,
-      endDate,
+      startDate: period.startDate,
+      endDate: period.endDate,
     })
 
     await this.reservationsRepository.create(reservation)

@@ -5,13 +5,16 @@ import { type Reservation as PrismaRersevation, Prisma } from '@prisma/client'
 
 export class PrismaReservationMapper {
   static toDomain(raw: PrismaRersevation): Reservation {
-    return Reservation.create({
-      roomId: new UniqueEntityID(raw.room_id),
-      userId: new UniqueEntityID(raw.user_id),
-      periodId: new UniqueEntityID(raw.period_id),
-      startDate: raw.start_date,
-      endDate: raw.end_date,
-    })
+    return Reservation.create(
+      {
+        roomId: new UniqueEntityID(raw.room_id),
+        userId: new UniqueEntityID(raw.user_id),
+        periodId: new UniqueEntityID(raw.period_id),
+        startDate: raw.start_date,
+        endDate: raw.end_date,
+      },
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrisma(

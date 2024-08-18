@@ -50,6 +50,16 @@ POST http://localhost:3333/rooms/f572bd3c-9698-4f89-84f5-5fd5245ba118/periods
 Content-Type: application/json
 
 {
-  "startDate": "2024-08-18T13:00:00.870Z",
-  "endDate": "2024-08-18T14:00:00.870Z"
+  "startDate": "2024-08-19T12:00:00.870Z",
+  "endDate": "2024-08-19T16:00:00.870Z"
+}
+
+###
+
+POST http://localhost:3333/rooms/f572bd3c-9698-4f89-84f5-5fd5245ba118/reservations
+Content-Type: application/json
+
+{
+  "userId": "5f909a4e-df2c-491d-81ff-5e77215c5b69",
+  "periodId": "984fd886-d116-451b-949f-7fb04766f95f"
 }

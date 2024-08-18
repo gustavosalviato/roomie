@@ -1,5 +1,5 @@
 import { makeCreatePeriodUseCase } from '../use-cases/make-create-period-use-case'
-import { CreatePeriodController } from '@/infra/http/controllers/period/create-period-controller'
+import { CreatePeriodController } from '@/infra/http/controllers/periods/create-period-controller'
 
 export function makeCreatePeriodController() {
   const createPeriodUseCase = makeCreatePeriodUseCase()
