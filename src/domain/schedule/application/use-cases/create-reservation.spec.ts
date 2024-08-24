@@ -61,7 +61,10 @@ describe('Create Reservation', () => {
   it('should not be able to overlap existing reservation', async () => {
     const user = makeUser()
     const room = makeRoom()
-    const period = makePeriod()
+    const period = makePeriod({
+      startDate: new Date(2024, 6, 7, 11),
+      endDate: new Date(2024, 6, 7, 13),
+    })
 
     inMemoryUsersRepository.create(user)
     inMemoryRoomsRepository.create(room)
@@ -71,16 +74,16 @@ describe('Create Reservation', () => {
       userId: user.id.toString(),
       roomId: room.id.toString(),
       periodId: period.id.toString(),
-      startDate: new Date(2024, 6, 7, 11),
-      endDate: new Date(2024, 6, 7, 13),
+      startDate: period.startDate,
+      endDate: period.endDate,
     })
 
     const result = await sut.execute({
       userId: user.id.toString(),
       roomId: room.id.toString(),
       periodId: period.id.toString(),
-      startDate: new Date(2024, 6, 7, 11),
-      endDate: new Date(2024, 6, 7, 13),
+      startDate: period.startDate,
+      endDate: period.endDate,
     })
 
     expect(result.isLeft()).toBe(true)
@@ -90,7 +93,10 @@ describe('Create Reservation', () => {
   it('should not be able to a reservation with invalid duration', async () => {
     const user = makeUser()
     const room = makeRoom()
-    const period = makePeriod()
+    const period = makePeriod({
+      startDate: new Date(2024, 6, 7, 11),
+      endDate: new Date(2024, 6, 7, 20),
+    })
 
     inMemoryUsersRepository.create(user)
     inMemoryRoomsRepository.create(room)
@@ -100,8 +106,8 @@ describe('Create Reservation', () => {
       userId: user.id.toString(),
       roomId: room.id.toString(),
       periodId: period.id.toString(),
-      startDate: new Date(2024, 6, 7, 11),
-      endDate: new Date(2024, 6, 7, 20),
+      startDate: period.startDate,
+      endDate: period.endDate,
     })
 
     expect(result.isLeft()).toBe(true)
