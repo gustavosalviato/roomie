@@ -4,7 +4,7 @@ import { Reservation } from '@/domain/schedule/enterprise/entities/reservation'
 import { PrismaReservationMapper } from '../mappers/prisma-reservation-mapper'
 import { PrismaClient } from '@prisma/client'
 
-export class PrismaReservationRepository implements ReservationsRepository {
+export class PrismaReservationsRepository implements ReservationsRepository {
   constructor(private prisma: PrismaClient) {}
 
   async create(reservation: Reservation): Promise<void> {

@@ -4,7 +4,7 @@ import { Period } from '@/domain/schedule/enterprise/entities/period'
 import { PrismaClient } from '@prisma/client'
 import { PrismaPeriodMapper } from '../mappers/prisma-period-mapper'
 
-export class PrismaPeriodRepository implements PeriodsRepository {
+export class PrismaPeriodsRepository implements PeriodsRepository {
   constructor(private prisma: PrismaClient) {}
   async create(period: Period): Promise<void> {
     const data = PrismaPeriodMapper.toPrisma(period)

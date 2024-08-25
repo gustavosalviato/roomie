@@ -63,3 +63,12 @@ Content-Type: application/json
   "userId": "5f909a4e-df2c-491d-81ff-5e77215c5b69",
   "periodId": "984fd886-d116-451b-949f-7fb04766f95f"
 }
+
+
+###
+
+POST http://localhost:3333/reservations/0a2d5818-839f-4c41-abc4-78d983849392
+Content-Type: application/json
+
+{
+}
