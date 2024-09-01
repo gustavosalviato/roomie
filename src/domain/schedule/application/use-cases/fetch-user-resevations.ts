@@ -16,7 +16,7 @@ type FetchUserReservationsResponse = Either<
   }
 >
 
-export class FetchUserReservations {
+export class FetchUserReservationsUseCase {
   constructor(
     private reservationsRespository: ReservationsRepository,
     private usersRepository: UsersRepository,

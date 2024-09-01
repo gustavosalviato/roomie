@@ -67,7 +67,15 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3333/reservations/0a2d5818-839f-4c41-abc4-78d983849392
+POST http://localhost:3333/reservations/5f909a4e-df2c-491d-81ff-5e77215c5b69
+Content-Type: application/json
+
+{
+}
+
+###
+
+GET http://localhost:3333/reservations/users/5f909a4e-df2c-491d-81ff-5e77215c5b69
 Content-Type: application/json
 
 {

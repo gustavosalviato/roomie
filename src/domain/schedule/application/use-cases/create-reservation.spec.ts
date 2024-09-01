@@ -50,8 +50,6 @@ describe('Create Reservation', () => {
       userId: user.id.toString(),
       roomId: room.id.toString(),
       periodId: period.id.toString(),
-      startDate: period.startDate,
-      endDate: period.endDate,
     })
 
     expect(result.isRight()).toBe(true)
@@ -74,16 +72,12 @@ describe('Create Reservation', () => {
       userId: user.id.toString(),
       roomId: room.id.toString(),
       periodId: period.id.toString(),
-      startDate: period.startDate,
-      endDate: period.endDate,
     })
 
     const result = await sut.execute({
       userId: user.id.toString(),
       roomId: room.id.toString(),
       periodId: period.id.toString(),
-      startDate: period.startDate,
-      endDate: period.endDate,
     })
 
     expect(result.isLeft()).toBe(true)
@@ -106,8 +100,6 @@ describe('Create Reservation', () => {
       userId: user.id.toString(),
       roomId: room.id.toString(),
       periodId: period.id.toString(),
-      startDate: period.startDate,
-      endDate: period.endDate,
     })
 
     expect(result.isLeft()).toBe(true)
