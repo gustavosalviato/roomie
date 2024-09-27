@@ -6,6 +6,9 @@ import { FastifyInstance } from 'fastify'
 
 export async function reservationRoutes(app: FastifyInstance) {
   app.post('/rooms/:roomId/reservations', makeCreateReservationController())
-  app.post('/reservations/:reservationId', makeCancelReservationController())
   app.get('/reservations/users/:userId', makeFetchUserReservationsController())
+  app.post(
+    '/reservations/:reservationId/cancel',
+    makeCancelReservationController(),
+  )
 }

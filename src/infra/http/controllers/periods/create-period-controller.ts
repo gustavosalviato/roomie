@@ -3,6 +3,7 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { Controller } from '@/infra/http/protocols/controller'
 
 import { ClientError } from '@/infra/http/controllers/errors/client-error'
+import { PeriodPresenter } from '../../presenters/period-presenter'
 
 import { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -31,7 +32,13 @@ export class CreatePeriodController implements Controller {
       endDate,
     })
 
-    if (result.isLeft()) {
+    if (result.isRight()) {
+      const periodId = PeriodPresenter.toHTTP(result.value.period).id
+
+      return reply.status(201).send({
+        periodId,
+      })
+    } else {
       const error = result.value
 
       switch (error.constructor) {
@@ -41,7 +48,5 @@ export class CreatePeriodController implements Controller {
           break
       }
     }
-
-    return reply.status(201).send()
   }
 }

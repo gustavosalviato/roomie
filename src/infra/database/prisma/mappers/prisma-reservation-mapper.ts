@@ -21,6 +21,7 @@ export class PrismaReservationMapper {
     reservation: Reservation,
   ): Prisma.ReservationUncheckedCreateInput {
     return {
+      id: reservation.id.toString(),
       room_id: reservation.roomId.toString(),
       user_id: reservation.userId.toString(),
       period_id: reservation.periodId.toString(),

@@ -24,8 +24,6 @@ export class PrismaRoomsRespository implements RoomsRepository {
   async save(room: Room): Promise<void> {
     const raw = PrismaRoomMapper.toPrisma(room)
 
-    console.log({ raw })
-
     await this.prisma.room.update({
       where: {
         id: raw.id,

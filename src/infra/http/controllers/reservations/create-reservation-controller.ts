@@ -6,6 +6,7 @@ import { ClientError } from '@/infra/http/controllers/errors/client-error'
 import { ReservationAlreadyExistsError } from '@/domain/schedule/application/use-cases/errors/reservation-already-exists-error'
 import { InvalidReservationEndDateError } from '@/domain/schedule/application/use-cases/errors/invalid-reservation-end-date-error'
 import { ReservationInvalidDurationError } from '@/domain/schedule/application/use-cases/errors/reservation-invalid-duration-error'
+import { ReservationPresenter } from '../../presenters/reservations-presenter'
 
 import { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -34,7 +35,15 @@ export class CreateReservationController implements Controller {
       roomId,
     })
 
-    if (result.isLeft()) {
+    if (result.isRight()) {
+      const reservationId = ReservationPresenter.toHTTP(
+        result.value.reservation,
+      ).id
+
+      return reply.status(201).send({
+        reservationId,
+      })
+    } else {
       const error = result.value
 
       switch (error.constructor) {

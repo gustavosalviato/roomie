@@ -16,6 +16,7 @@ export class PrismaPeriodMapper {
 
   static toPrisma(period: Period): Prisma.PeriodUncheckedCreateInput {
     return {
+      id: period.id.toString(),
       room_id: period.roomId.toString(),
       start_date: period.startDate,
       end_date: period.endDate,
