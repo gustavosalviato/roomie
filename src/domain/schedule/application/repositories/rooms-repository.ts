@@ -6,5 +6,4 @@ export interface RoomsRepository {
   save(room: Room): Promise<void>
   fetchRooms(): Promise<Room[]>
   findById(id: string): Promise<null | Room>
-  findByName(name: string): Promise<null | Room>
 }

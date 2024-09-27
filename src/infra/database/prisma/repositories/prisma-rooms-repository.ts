@@ -22,16 +22,13 @@ export class PrismaRoomsRespository implements RoomsRepository {
     })
   }
   async save(room: Room): Promise<void> {
+    const raw = PrismaRoomMapper.toPrisma(room)
+
     await this.prisma.room.update({
       where: {
-        id: room.id.toString(),
+        id: raw.id,
       },
-      data: {
-        name: room.name,
-        capacity: room.capacity,
-        location: room.location,
-        resources: room.resources[0],
-      },
+      data: raw,
     })
   }
   async fetchRooms(): Promise<Room[]> {

@@ -8,19 +8,19 @@ import { HashCompare } from '../cryptography/hash-compare'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
-interface AuthenticateUserRequest {
+interface AuthenticateUserUseCaseRequest {
   email: string
   password: string
 }
 
-type AuthenticateUserResponse = Either<
+type AuthenticateUserUseCaseResponse = Either<
   ResourceNotFoundError | InvalidCredentialsError,
   {
     user: User
   }
 >
 
-export class AuthenticateUser {
+export class AuthenticateUserUseCase {
   constructor(
     private usersRepository: UsersRepository,
     private hashCompare: HashCompare,
@@ -29,7 +29,7 @@ export class AuthenticateUser {
   async execute({
     email,
     password,
-  }: AuthenticateUserRequest): Promise<AuthenticateUserResponse> {
+  }: AuthenticateUserUseCaseRequest): Promise<AuthenticateUserUseCaseResponse> {
     const user = await this.usersRepository.findByEmail(email)
 
     if (!user) {

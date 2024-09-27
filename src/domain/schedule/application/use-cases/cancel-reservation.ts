@@ -16,7 +16,7 @@ type CancelReservationResponse = Either<
   }
 >
 
-export class CancelReservation {
+export class CancelReservationUseCase {
   constructor(private reservationsRepository: ReservationsRepository) {}
 
   async execute({

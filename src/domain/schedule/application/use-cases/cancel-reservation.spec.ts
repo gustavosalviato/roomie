@@ -2,15 +2,15 @@ import { InMemoryReservationsRepository } from 'test/repositories/in-memory-rese
 import { makeReservation } from 'test/factories/make-reservation'
 import { LateCancelReservationError } from './errors/late-cancel-reservation-error'
 
-import { CancelReservation } from './cancel-reservation'
+import { CancelReservationUseCase } from './cancel-reservation'
 
 describe('Cancel Reservation', () => {
   let inMemoryReservationsRepository: InMemoryReservationsRepository
-  let sut: CancelReservation
+  let sut: CancelReservationUseCase
 
   beforeEach(() => {
     inMemoryReservationsRepository = new InMemoryReservationsRepository()
-    sut = new CancelReservation(inMemoryReservationsRepository)
+    sut = new CancelReservationUseCase(inMemoryReservationsRepository)
 
     vi.useFakeTimers()
   })

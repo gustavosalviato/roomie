@@ -6,3 +6,77 @@ Content-Type: application/json
   "email": "john@smith.com",
   "password": "123456"
 }
+
+###
+
+POST http://localhost:3333/sessions Content-Type: application/json
+
+{
+  "email": "gustavosalviato8@gmail.com",
+  "password": "123456"
+}
+
+###
+POST http://localhost:3333/rooms
+Content-Type: application/json
+
+{
+  "name": "Room adkjaskdjd",
+  "capacity": 10,
+  "location": "floor 2",
+  "resources": ["whiteboard", "table", "projetor"]
+}
+
+###
+
+PUT http://localhost:3333/rooms/84b3f2da-f846-4b3c-8f22-43a614173146
+Content-Type: application/json
+
+{
+  "name": "Room modified 1",
+  "capacity": 1,
+  "location": "floor 1",
+  "resources": ["whiteboard", "table", "projetor"]
+}
+
+###
+
+DELETE http://localhost:3333/rooms/fa7b15a3-f2b4-4c1f-a7ec-eb42b23d949c
+Content-Type: application/json
+
+###
+
+POST http://localhost:3333/rooms/f572bd3c-9698-4f89-84f5-5fd5245ba118/periods
+Content-Type: application/json
+
+{
+  "startDate": "2024-08-19T12:00:00.870Z",
+  "endDate": "2024-08-19T16:00:00.870Z"
+}
+
+###
+
+POST http://localhost:3333/rooms/f572bd3c-9698-4f89-84f5-5fd5245ba118/reservations
+Content-Type: application/json
+
+{
+  "userId": "5f909a4e-df2c-491d-81ff-5e77215c5b69",
+  "periodId": "984fd886-d116-451b-949f-7fb04766f95f"
+}
+
+
+###
+
+POST http://localhost:3333/reservations/5f909a4e-df2c-491d-81ff-5e77215c5b69/cancel
+Content-Type: application/json
+
+{
+}
+
+###
+
+GET http://localhost:3333/reservations/users/5f909a4e-df2c-491d-81ff-5e77215c5b69
+Content-Type: application/json
+
+{
+}

@@ -34,16 +34,4 @@ export class InMemoryRoomsRepository implements RoomsRepository {
 
     return room
   }
-
-  async findByName(name: string) {
-    const room = this.items.find(
-      room => room.name.toLowerCase() === name.toLowerCase(),
-    )
-
-    if (!room) {
-      return null
-    }
-
-    return room
-  }
 }
