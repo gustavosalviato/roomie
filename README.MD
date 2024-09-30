@@ -50,7 +50,7 @@ The objective of this project is to create an API with a well-defined, decoupled
 
 ## Business Rules
 
-## User Registration and Authentication
+### User Registration and Authentication
 - Each user must have a unique email for registration.
 - Passwords must be securely stored (hashed).
 
