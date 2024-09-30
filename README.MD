@@ -29,34 +29,28 @@ The objective of this project is to create an API with a well-defined, decoupled
 ## Regras de negócio
 
 ### Cadastro e autenticação de usuários
-
 - Cadas usuário deve ter um e-mail único para registro.
 - Senhas dever ser armazenadas de forma segura (hashing).
 
 ### Gerenciamento de salas
-
 - Apenas administratores podem criar, editar ou deletar salas.
 - Cada sala deve ter um nome único, capacidade e recursos (ex: TV, quandro, etc).
 
 ### Reservar de salas
-
 - Usuários podem reservar salas para uma data e hora específicas.
 - Reservas não podem sobrepor-se a outras reservas.
 - A duração miníma de uma reserva é de 30 minutos e a máxima é de 4 horas.
 
 ### Visualização de reservas
-
 - Usuários podem visualizar apenas suas próprias reservas.
 - Usuários podem visualizar a disponibilidade das salas para fazer novas reservas.
 
 ### Cancelamento de reservas
-
 - Usuários podem cancelar suas reservas até 1 hora antes do horário de início.
 
 ## Business Rules
 
 ## User Registration and Authentication
-
 - Each user must have a unique email for registration.
 - Passwords must be securely stored (hashed).
 
